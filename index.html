@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="demo.css">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<h1>Contact Us</h1>
+
+<form id="contactForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone">Phone:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
+
+    <button type="button" onclick="sendEmail()">Submit</button>
+</form>
+
+<div id="message-container">
+    <div id="success-message"></div>
+    <div id="error-message"></div>
+</div>
+
+<script>
+    function sendEmail() {
+        emailjs.init("9D6syG1bMoR-eWb--"); // Replace with your Email.js public key
+
+        const contactForm = document.getElementById("contactForm");
+        const successMessage = document.getElementById("success-message");
+        const errorMessage = document.getElementById("error-message");
+
+        const templateParams = {
+            from_name: document.getElementById("name").value,
+            Email_id: document.getElementById("email").value,
+            Phone: document.getElementById("phone").value,
+            Message: document.getElementById("message").value,
+        };
+
+        emailjs.send("service_vhgbegm", "template_fnapt3i", templateParams)
+            .then(response => {
+                console.log("Email sent:", response);
+                successMessage.style.display = "block";
+                successMessage.innerText = "Thank you! Your message has been sent.";
+                errorMessage.style.display = "none"; // Clear error message
+                contactForm.classList.add("hidden"); // Hide the form
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                errorMessage.style.display = "block";
+                errorMessage.innerText = "Oops! Something went wrong. Please try again later.";
+                successMessage.style.display = "none"; // Clear success message
+            });
+    }
+</script>
+
+</body>
+</html>
